@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\FrontController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,13 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::get('/', [FrontController::class, 'index'])->name('front');
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [BlogController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/blog', [BlogController::class, 'create'])->name('dashboard.blog.create');    
+    Route::post('/dashboard', [BlogController::class, 'store'])->name('dashboard.blog.store');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
