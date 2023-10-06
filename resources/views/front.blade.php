@@ -57,6 +57,10 @@
                                 <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
                                     {{ $blog['description'] }}
                                 </p>
+
+                                <div class="mt-4 text-gray-500 dark:text-gray-400 text-xs leading-relaxed">
+                                    {{ $blog['publication_date'] }} created by <i>{{ $blog['user_name'] }}</i>
+                                </div>                                
                             </div>
                         </div>
                     @endforeach

@@ -15,17 +15,19 @@
                 <div class="p-6 text-gray-900">
 
                     <div class="container mt-4">
-                        @if(session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
+
+                        @if (Session::has('status'))
+                            <div class="mt-2 mb-2 alert alert-danger">
+                                {{ Session::get('status') }}
                             </div>
-                        @endif
+                        @endif                        
+
                         <div class="card">
                             <div class="card-header text-center font-weight-bold">
                             {{ __('Add Blog Post') }}
                             </div>
                             <div class="card-body">
-                                <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{url('dashboard')}}">
+                                <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{route('dashboard.blog.store')}}">
                                 @csrf
                                     <div class="form-group">
                                     <label for="InputTitle">{{ __('Title') }}</label>

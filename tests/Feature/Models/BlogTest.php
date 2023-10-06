@@ -58,29 +58,33 @@ class BlogTest extends TestCase
         $b['user_id'] = $admin->id;
         Blog::create( $b );
 
-        $b['title'] = 'title2';
-        $b['description'] = 'description2';
-        $b['publication_date'] = Carbon::now()->subDay(2)->format('Y-m-d'); //it will be first
-        $b['user_id'] = $admin->id;
-        Blog::create( $b );
+        $b0['title'] = 'title2';
+        $b0['description'] = 'description2';
+        $b0['publication_date'] = Carbon::now()->subDay(2)->format('Y-m-d'); //it will be first
+        $b0['user_id'] = $user->id;
+        Blog::create( $b0 );
 
         $b['title'] = 'title3';
         $b['description'] = 'description3';
         $b['publication_date'] = Carbon::now()->subDay(3)->format('Y-m-d');
-        $b['user_id'] = $admin->id;
+        $b['user_id'] = $user->id;
         Blog::create( $b );
 
         $b['title'] = 'title4';
         $b['description'] = 'description4';
         $b['publication_date'] = Carbon::now()->addDay(1)->format('Y-m-d'); //! not appear
-        $b['user_id'] = $admin->id;
+        $b['user_id'] = $user->id;
         Blog::create( $b );
 
         $this->assertEquals(4, Blog::All()->count());
 
         $blogs =  (new Blog)->getDataToFront();
         $this->assertEquals(3, count($blogs));        
-        $this->assertEquals(Carbon::now()->subDay(2)->format('Y-m-d'), $blogs[0]['publication_date'] );                
+        $this->assertEquals($b0['publication_date'], $blogs[0]['publication_date'] );
+        $this->assertEquals($b0['title'], $blogs[0]['title'] );
+        $this->assertEquals($b0['description'], $blogs[0]['description'] );
+        $this->assertEquals($user->name, $blogs[0]['user_name'] );
+        $this->assertEquals(4, count($blogs[0]));
     }
 
 
@@ -89,7 +93,7 @@ class BlogTest extends TestCase
         $user = new User([
             'email'    => 'admin@example.com',
             'name'     => 'Admin',
-            'is_admin' => true
+            'is_admin' => 1
        ]);
 
         $user->password = 'secret102';
@@ -102,7 +106,7 @@ class BlogTest extends TestCase
         $user = new User([
             'email'    => 'user1@example.com',
             'name'     => 'User1',
-            'is_admin' => false
+            'is_admin' => 0
        ]);
 
         $user->password = 'secret102';

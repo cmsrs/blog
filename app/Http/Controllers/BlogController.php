@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Validator;
 
 class BlogController extends Controller
 {
+
+    private $validationRules = [
+        'title' => 'min:2|max:9200|required',
+        'description' => 'min:2|max:9200',
+        'publication_date' => 'required'    
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,6 +23,7 @@ class BlogController extends Controller
     {
         $authUser = Auth::user();
         $blogs = Blog::sortable()->where( 'user_id', '=', $authUser->id )->orderBy('publication_date', 'desc')->paginate(5);
+        //$blogs = Blog::sortable()->where( 'user_id', '=', $authUser->id )->paginate(5);
 
         return view('dashboard', [
             'blogs' => $blogs,
@@ -25,7 +34,7 @@ class BlogController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         return view('addblog');
     }
@@ -48,6 +57,12 @@ class BlogController extends Controller
     {
 
         $data = $request->only('title', 'description', 'publication_date' );
+        $validator = Validator::make($data, $this->validationRules);
+        if ($validator->fails()) {
+            $request->session()->flash('status', 'Fields: title and description should have a length between 2 and 9200 characters.');     
+            return redirect()->route('dashboard.blog.create');
+        }
+
         $data['user_id'] = Auth::user()->id;        
 
         if( empty($data['user_id']) ){

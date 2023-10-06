@@ -21,6 +21,11 @@ class Blog extends Model
 
     public $sortable = ['publication_date'];
 
+    public function user()
+    {
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
+    }
+
     public function import()
     {
         $externalApi = env('EXTERNAL_API', null);
@@ -99,9 +104,27 @@ class Blog extends Model
         return $response;
     }
 
+    /**
+     * in that select i execute only two select (it is tweak boost performance):
+     * "query" => "select * from `blogs` where `publication_date` < ? order by `publication_date` desc"
+     * "query" => "select * from `users` where `users`.`id` in (?, ?)"
+     */
     public function getDataToFront()
     {
-        return Blog::where( 'publication_date', '<', Carbon::now() )->orderBy('publication_date', 'desc')->get()->toArray();
+        //\DB::enableQueryLog(); 
+        $ret =  Blog::with(['user'])->where( 'publication_date', '<', Carbon::now() )->orderBy('publication_date', 'desc')->get()->toArray();
+        //dd(\DB::getQueryLog()); 
+
+        //I dont want show every information on frontend page
+        $out = [];
+        foreach($ret as $k=>$v){
+            $out[$k]['title'] = $v['title'];
+            $out[$k]['description'] = $v['description'];
+            $out[$k]['publication_date'] = $v['publication_date'];
+            $out[$k]['user_name'] = $v['user']['name'];
+        }
+
+        return $out;
     }
 
 }
