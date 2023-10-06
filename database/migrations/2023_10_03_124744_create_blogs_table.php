@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->date('publication_date')->index();
-            $table->boolean('is_admin')->default(0);
+            $table->date('publication_date')->index();            
             $table->unsignedBigInteger('user_id')->notNullable();
             $table->foreign('user_id')->notNullable()->references('id')->on('users');       
             //$table->index(['publication_date']);

@@ -18,7 +18,17 @@
                     <div class="container">
 
                         <a href="{{route('dashboard.blog.create')}}" class="btn btn-primary mt-2 mb-4">{{ __('Add Blog Post') }}</a>
+                        @if($is_admin )
+                        <a href="{{route('dashboard.blog.import')}}" class="btn btn-primary ml-4 mt-2 mb-4">{{ __('Import Blogs') }}</a>     
+                        @endif                        
+                        
+                        @if (Session::has('status'))
+                            <div class="mt-2 mb-2 alert alert-success">
+                                {{ Session::get('status') }}
+                            </div>
+                        @endif                        
 
+                        @if($blogs->count())
                         <table class="table table-hover">
                             <thead>
                             <tr>                            
@@ -37,6 +47,9 @@
                             @endforeach
                             </tbody>
                         </table>
+                        @else
+                        <p>You don't have any blog yet.</p>
+                        @endif
                     </div>
                     {{ $blogs->links() }}                    
 

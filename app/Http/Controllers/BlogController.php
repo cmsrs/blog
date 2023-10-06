@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
@@ -14,14 +13,12 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $userId = Auth::user()->id;
-        //::where( 'user_id', '=', $userId )
-        //dd($Blog);
-
-        $blogs = Blog::sortable()->where( 'user_id', '=', $userId )->paginate(5);
+        $authUser = Auth::user();
+        $blogs = Blog::sortable()->where( 'user_id', '=', $authUser->id )->orderBy('publication_date', 'desc')->paginate(5);
 
         return view('dashboard', [
-            'blogs' => $blogs
+            'blogs' => $blogs,
+            'is_admin' => $authUser->is_admin
         ]);
     }
 
@@ -31,6 +28,17 @@ class BlogController extends Controller
     public function create()
     {
         return view('addblog');
+    }
+
+    /**
+     * Import blogs from external API
+     */
+    public function import(Request $request)
+    {
+        (new Blog)->import();
+
+        $request->session()->flash('status', 'The data has been successfully imported');    
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -50,7 +58,8 @@ class BlogController extends Controller
         if (empty($blog->id)) {
             throw new \Exception("I cant create blog");
         }
-
+    
+        $request->session()->flash('status', 'Your blog has been successfully created');    
         return redirect()->route('dashboard');
     }
 

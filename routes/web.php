@@ -23,6 +23,7 @@ Route::get('/', [FrontController::class, 'index'])->name('front');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [BlogController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/blog', [BlogController::class, 'create'])->name('dashboard.blog.create');    
+    Route::get('/dashboard/import', [BlogController::class, 'import'])->name('dashboard.blog.import');
     Route::post('/dashboard', [BlogController::class, 'store'])->name('dashboard.blog.store');
 });
 
