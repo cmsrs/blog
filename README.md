@@ -4,29 +4,30 @@ Writing a Blog System in Laravel
 
 # INSTALLATION
 
-*
+download
 ```bash
 git clone  https://github.com/cmsrs/blog.git
 cd blog
 ```
 
-*
+install php dependency
 ```bash
 composer install
 ```
 
-*
 set up database in .env file
 you can add EXTERNAL_API, for example:
+```bash
 EXTERNAL_API="https://candidate-test-rs.com/api.php"
+```
 
-*
+install js dependency
 ```bash
 npm install
 npm run dev
 ```
 
-*
+migrate data
 ```bash
 php artisan migrate
 ```
@@ -36,6 +37,7 @@ create admin admin@example.com with password: secret123 :
 php artisan   app:create-admin  admin@example.com secret123
 ```
 
+start server
 ```bash
 php artisan serve
 ```
@@ -43,9 +45,9 @@ php artisan serve
 # RUN TESTS
 
 set up database in .env.testing file
-
+```bash
 ./vendor/bin/phpunit
-
+```
 
 # To improve performance:
 
