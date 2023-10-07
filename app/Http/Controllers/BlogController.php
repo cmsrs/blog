@@ -44,9 +44,10 @@ class BlogController extends Controller
      */
     public function import(Request $request)
     {
-        (new Blog)->import();
+        $ret = (new Blog)->import();
 
-        $request->session()->flash('status', 'The data has been successfully imported');    
+        //$request->session()->flash('status', 'The data has been successfully imported');    
+        $request->session()->flash('status', $ret['msg']);
         return redirect()->route('dashboard');
     }
 
