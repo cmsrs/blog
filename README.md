@@ -16,9 +16,7 @@ install php dependency
 composer install
 ```
 
-set up database in .env file
-
-you can also add EXTERNAL_API, for example:
+set up database in .env file, you can also add EXTERNAL_API, for example:
 ```bash
 EXTERNAL_API="https://candidate-test-rs.com/api.php"
 ```
