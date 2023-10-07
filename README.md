@@ -49,7 +49,7 @@ set up database in .env.testing file
 ./vendor/bin/phpunit
 ```
 
-# To improve performance:
+# To improve performance, I implemented the following features:
 
 *    Utilize pagination data in the user zone.
 *    Implement 'eager loading' to retrieve frontend data.
