@@ -9,6 +9,7 @@ use App\Exceptions\ImportBlogsException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class Blog extends Model
 {
@@ -33,7 +34,18 @@ class Blog extends Model
             throw  new ImportBlogsException( 'Cant find EXTERNAL_API in env file' );
         }
         $data = $this->fetchDataFromApi( $externalApi );
-        return $this->saveExternalData( $data );
+        $ret = $this->saveExternalData( $data );
+        $this->cacheGetDataToFront();
+        return $ret;
+    }
+
+    public function  storeAndCache($data)
+    {
+        $blog = Blog::create($data);
+        if (empty($blog->id)) {
+            throw new \Exception("I cant create blog");
+        }
+        $this->cacheGetDataToFront();
     }
 
     public function saveExternalData( $json )
@@ -120,6 +132,7 @@ class Blog extends Model
     public function getDataToFront()
     {
         //\DB::enableQueryLog(); 
+        //use 'eager loading'
         $ret =  Blog::with(['user'])->where( 'publication_date', '<', Carbon::now() )->orderBy('publication_date', 'desc')->get()->toArray();
         //dd(\DB::getQueryLog()); 
 
@@ -133,6 +146,12 @@ class Blog extends Model
         }
 
         return $out;
+    }
+
+    public function cacheGetDataToFront()
+    {
+        $frontData =  $this->getDataToFront();
+        Cache::put('front_data', $frontData);
     }
 
 }

@@ -70,10 +70,7 @@ class BlogController extends Controller
             throw new \Exception("Problem with finding user");
         }
 
-        $blog = Blog::create($data);
-        if (empty($blog->id)) {
-            throw new \Exception("I cant create blog");
-        }
+        (new Blog)->storeAndCache($data);
     
         $request->session()->flash('status', 'Your blog has been successfully created');    
         return redirect()->route('dashboard');

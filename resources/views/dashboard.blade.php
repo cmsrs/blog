@@ -51,7 +51,7 @@
                         <p>You don't have any blog yet.</p>
                         @endif
                     </div>
-                    {{ $blogs->links() }}                    
+                    {{ $blogs->links() }}
 
 
                 </div>

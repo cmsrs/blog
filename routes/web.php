@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontController::class, 'index'])->name('front');
 
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [BlogController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/blog/create', [BlogController::class, 'create'])->name('dashboard.blog.create');    
