@@ -1,4 +1,5 @@
 # BLOG 
+
 Writing a Blog System in Laravel
 
 
@@ -16,7 +17,8 @@ composer install
 ```
 
 set up database in .env file
-you can add EXTERNAL_API, for example:
+
+you can also add EXTERNAL_API, for example:
 ```bash
 EXTERNAL_API="https://candidate-test-rs.com/api.php"
 ```
@@ -32,7 +34,7 @@ migrate data
 php artisan migrate
 ```
 
-create admin admin@example.com with password: secret123 :
+create admin admin@example.com with password: secret123
 ```bash
 php artisan   app:create-admin  admin@example.com secret123
 ```
@@ -56,5 +58,3 @@ set up database in .env.testing file
 *    Create an index on the 'publication_date' database column.
 *    Employ caching to display frontend data.
 *    Utilize pagination data on the frontend site.
-
-
