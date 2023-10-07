@@ -56,3 +56,8 @@ set up database in .env.testing file
 *    Create an index on the 'publication_date' database column.
 *    Employ caching to display frontend data.
 *    Utilize pagination data on the frontend site.
+
+
+# How it works
+
+https://www.youtube.com/watch?v=KKaltI1aRgw
